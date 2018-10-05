@@ -1,9 +1,12 @@
 ## Orientações Git
 
+
+### Verificar as branches existentes
+- git branch -a
 ### Criar uma branch
-- git branch -b nome-branch
+- git branch -b nome-branch ou git checkout -b nome-branch (esta opção já cria a branch e muda pra ela)
 - git push
-    
+
 ### Merge
 - Vá para a branch devil
   - git checkout devil
