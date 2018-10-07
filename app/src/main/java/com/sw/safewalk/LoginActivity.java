@@ -35,8 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         final Button btnSignUp = findViewById(R.id.btnSignUp);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
-                startActivity(intent);
+            Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+            startActivity(intent);
             }
         });
     }
@@ -54,14 +54,13 @@ public class LoginActivity extends AppCompatActivity {
         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    Toast.makeText(LoginActivity.this, "Sucesso!", Toast.LENGTH_SHORT).show();
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                }
+            if (task.isSuccessful()) {
+                Toast.makeText(LoginActivity.this, "Bem vindo de volta!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(LoginActivity.this, "Usuário ou senha inválidos", Toast.LENGTH_SHORT).show();
+            }
             }
         });
     }
