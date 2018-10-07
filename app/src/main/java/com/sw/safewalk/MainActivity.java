@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
-        Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(intent);
     }
 }
