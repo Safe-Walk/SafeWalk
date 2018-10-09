@@ -1,5 +1,10 @@
-## Orientações Git
+﻿## Orientações Git
 
+### Pegar os dados
+- git pull
+
+### Enviar os dados
+- git push
 
 ### Verificar as branches existentes
 - git branch -a
