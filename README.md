@@ -8,6 +8,7 @@
 
 ### Verificar as branches existentes
 - git branch -a
+
 ### Criar uma branch
 - git branch -b nome-branch ou git checkout -b nome-branch (esta opção já cria a branch e muda pra ela)
 - git push
@@ -29,4 +30,5 @@
   - Faça o merge com a sua branch
     - git merge nome-branch
 
+  - OBS: Se der conflito no arquivo no merge, resolver o conflito e depois fazer o commit e o push.
 
