@@ -1,5 +1,10 @@
-## Orientações Git
+﻿## Orientações Git
 
+### Pegar os dados
+- git pull
+
+### Enviar os dados
+- git push
 
 ### Verificar as branches existentes
 - git branch -a
@@ -23,3 +28,5 @@
   - Volte para a branch devil
   - Faça o merge com a sua branch
     - git merge nome-branch
+
+
