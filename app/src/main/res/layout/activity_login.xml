@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/email"
         style="@android:style/Widget.Material.Light.AutoCompleteTextView"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
@@ -28,18 +28,20 @@
     <Button
         android:id="@+id/btnLogin"
         style="@android:style/Widget.Material.Button"
+        android:onClick="onClick"
+        android:clickable="true"
         android:layout_width="272dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="44dp"
         android:text="Login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/password"
         style="@android:style/Widget.Material.Light.AutoCompleteTextView"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
@@ -57,20 +59,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnSignUp"
-        style="@android:style/Widget.Material.Button"
-        android:layout_width="272dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:text="Cadastrar"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Tab"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
-
     <ImageView
         android:id="@+id/logo"
         android:layout_width="133dp"
@@ -83,5 +71,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/btnSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:clickable="true"
+        android:text="Cadastre-se"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Tab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.17"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
+    <TextView
+        android:id="@+id/btnResetPsw"
+        android:layout_width="wrap_content"
+        android:layout_height="17dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:text="Esqueci minha senha!"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Tab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.229"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSignUp" />
 
 </android.support.constraint.ConstraintLayout>

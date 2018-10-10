@@ -1,10 +1,12 @@
 package com.sw.safewalk;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,20 +41,22 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void createAccount() {
-        String email = "edson@gmail.com";
-        String password = "password";
+        EditText email = findViewById(R.id.email);
+        EditText password = findViewById(R.id.password);
 
-        mAuth.createUserWithEmailAndPassword(email, password)
+        mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    FirebaseUser user = mAuth.getCurrentUser();
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(SignUpActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                }
+            if (task.isSuccessful()) {
+                // Sign in success
+                Toast.makeText(SignUpActivity.this, "Cadastro realizado com sucesso.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+            } else {
+                // If sign in fails
+                Toast.makeText(SignUpActivity.this, "Erro ao realizar o cadastro.", Toast.LENGTH_SHORT).show();
+            }
             }
         });
     }
