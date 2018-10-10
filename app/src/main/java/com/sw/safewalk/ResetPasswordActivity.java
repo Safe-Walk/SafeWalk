@@ -29,21 +29,23 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         // Botão para enviar o e-mail para resetar a senha
 
-        final TextView btnResetPsw = findViewById(R.id.btnResetPsw);
+        final Button btnResetPsw = findViewById(R.id.btnResetPsw);
+
         btnResetPsw.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                FirebaseAuth auth = FirebaseAuth.getInstance();
-                EditText email = findViewById(R.id.email);
+            EditText email = findViewById(R.id.email);
 
-                auth.sendPasswordResetEmail(email.getText().toString())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(ResetPasswordActivity.this, "E-mail enviado com sucesso!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+            mAuth.sendPasswordResetEmail(email.getText().toString())
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(ResetPasswordActivity.this, "E-mail enviado com sucesso!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ResetPasswordActivity.this, "Não foi possível enviar o e-mail", Toast.LENGTH_SHORT).show();
+                }
+                }
+            });
             }
         });
     }
