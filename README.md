@@ -28,4 +28,3 @@
   - Volte para a branch devil
   - Faça o merge com a sua branch
     - git merge nome-branch
-
