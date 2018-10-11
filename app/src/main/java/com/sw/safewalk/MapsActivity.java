@@ -16,7 +16,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.location.*;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener{
     private static final int FINE_LOCATION_PERMISSION_REQUEST = 1;
@@ -43,19 +42,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(sydney.latitude, sydney.longitude), 15));
-        System.out.println("Teste dessa porcaria!!!!");
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mMap.setOnMyLocationButtonClickListener(this);
             mMap.setOnMyLocationClickListener(this);
-
-            System.out.println("Teste dessa degraça!!!!");
         }else {
             ActivityCompat.requestPermissions(this,
                     new String []{Manifest.permission.ACCESS_FINE_LOCATION},
                     FINE_LOCATION_PERMISSION_REQUEST);
         }
+
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                mMap.clear();
+                mMap.addMarker(new MarkerOptions().position(latLng));
+            }
+        });
 
     }
 
@@ -69,4 +73,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         return false;
     }
+
 }
