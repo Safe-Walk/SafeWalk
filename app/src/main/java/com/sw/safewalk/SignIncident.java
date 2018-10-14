@@ -58,7 +58,6 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        crimeDescription = findViewById(R.id.crimeDescription);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_incident);
