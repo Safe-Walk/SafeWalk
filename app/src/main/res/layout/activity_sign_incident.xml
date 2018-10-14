@@ -7,7 +7,7 @@
     tools:context=".SignIncident">
 
     <Button
-        android:id="@+id/btnLogin3"
+        android:id="@+id/saveIncident"
         style="@android:style/Widget.Material.Button"
         android:layout_width="272dp"
         android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/crimeDescription"
         style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
         android:layout_width="337dp"
         android:layout_height="39dp"
@@ -113,7 +113,7 @@
         android:layout_marginTop="16dp"
         android:text="Descrição"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Tab"
-        app:layout_constraintEnd_toStartOf="@+id/editText3"
+        app:layout_constraintEnd_toStartOf="@+id/crimeDescription"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
