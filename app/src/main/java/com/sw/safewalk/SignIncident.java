@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -55,14 +56,13 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
     private SeekBar crimeLevel;
     private Spinner crimeList;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         crimeDescription = findViewById(R.id.crimeDescription);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_incident);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map2);
         mapFragment.getMapAsync(this);
@@ -97,16 +97,19 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    // @TODO colocar a localização atual
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        // Add a marker in Sydney and move the camera
+
         LatLng sydney = new LatLng(27.746974, 85.301582);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Kathmandu, Nepal"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+
         mMap.setMyLocationEnabled(true);
     }
 
@@ -119,13 +122,18 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
                 crimeLevel = findViewById(R.id.crimeLevel);
                 crimeList = findViewById(R.id.crimeList);
 
+                String descricao = crimeDescription.getText().toString();
+                Integer nivel = crimeLevel.getProgress();
+                String crimeSelecionado = crimeList.getSelectedItem().toString();
+
+                Incident incidentInfo = new Incident(crimeSelecionado, descricao, nivel, latLng);
+
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference incident = database.getReference("incidentes");
 
-                incident.child("registrar").child("descricaoCrime").setValue(crimeDescription.getText().toString());
-                incident.child("registrar").child("nivelCrime").setValue(crimeLevel.getProgress());
-                incident.child("registrar").child("tipoCrime").setValue(crimeList.getSelectedItem().toString());
-                incident.child("registrar").child("localCrime").setValue(latLng);
+                incident.child("listaOcorrencia").push().setValue(incidentInfo);
+
+                Toast.makeText(SignIncident.this, "Obrigado por nos ajudar com as informações!", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                 startActivity(intent);
