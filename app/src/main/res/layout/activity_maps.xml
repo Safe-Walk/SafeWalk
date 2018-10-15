@@ -12,6 +12,8 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         tools:context=".MapsActivity" />
 
 
@@ -31,5 +33,17 @@
         android:background="@android:color/transparent"
         android:clickable="true"
         android:rotation="0" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnRouteMap"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/btnIncident"
+        android:layout_marginEnd="112dp"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:rotation="0" />
+
 
 </RelativeLayout>
