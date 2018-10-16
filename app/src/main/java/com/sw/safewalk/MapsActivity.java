@@ -86,6 +86,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(intent);
             }
         });
+
+        // Botão para redirecionar a activity de criação de rotas
+        final FloatingActionButton btnRouteMap = (FloatingActionButton) findViewById(R.id.btnRouteMap);
+        btnRouteMap.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RouteMap.class);
+                startActivity(intent);
+            }
+        });
     }
     @Override
     public void onMyLocationClick(@NonNull Location location){
