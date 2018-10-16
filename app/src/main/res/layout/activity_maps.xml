@@ -44,6 +44,4 @@
         android:background="@android:color/transparent"
         android:clickable="true"
         android:rotation="0" />
-
-
 </RelativeLayout>
