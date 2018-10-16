@@ -6,7 +6,6 @@
     tools:context=".MapsActivity">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -32,7 +31,9 @@
         android:layout_marginTop="30dp"
         android:background="@android:color/transparent"
         android:clickable="true"
-        android:rotation="0" />
+        android:rotation="0"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@android:color/white" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btnRouteMap"
@@ -44,6 +45,5 @@
         android:background="@android:color/transparent"
         android:clickable="true"
         android:rotation="0" />
-
 
 </RelativeLayout>
