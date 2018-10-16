@@ -59,10 +59,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login() {
-        EditText email = findViewById(R.id.email);
-        EditText password = findViewById(R.id.password);
+//        EditText email = findViewById(R.id.email);
+//        EditText password = findViewById(R.id.password);
+//        .getText().toString()
+        String email = "erika@gmail.com";
+        String password = "password";
 
-        mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+        mAuth.signInWithEmailAndPassword(email, password)
         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
