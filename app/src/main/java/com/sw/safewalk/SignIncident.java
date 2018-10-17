@@ -39,7 +39,6 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
     private EditText crimeDescription;
     private SeekBar crimeLevel;
     private Spinner crimeList;
-    private Marker mMarker;
     private MarkerOptions markerOptions;
 
     @Override

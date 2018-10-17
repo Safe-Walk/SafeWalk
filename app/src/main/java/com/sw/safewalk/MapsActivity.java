@@ -95,4 +95,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         return false;
     }
+
+    @Override
+    public void onBackPressed(){
+        Intent exit = new Intent(Intent.ACTION_MAIN);
+        exit.addCategory(Intent.CATEGORY_HOME);
+        exit.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(exit);
+    }
 }
