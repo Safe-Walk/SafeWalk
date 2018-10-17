@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -37,6 +39,8 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
     private EditText crimeDescription;
     private SeekBar crimeLevel;
     private Spinner crimeList;
+    private Marker mMarker;
+    private MarkerOptions markerOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,8 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
         String[] items = new String[]{"Roubo", "Furto", "Assalto", "Perseguição", "Assédio", "Outro"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         saveIncident();
     }
@@ -73,7 +79,8 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
 
             Address address = addressList.get(0);
             latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+            markerOptions = new MarkerOptions().position(latLng);
+            mMap.addMarker(markerOptions);
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         }
     }
@@ -83,7 +90,7 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         LatLng sydney = new LatLng(-15.7797, -47.9297);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Kathmandu, Nepal"));
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Kathmandu, Nepal"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(sydney.latitude, sydney.longitude), 15));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -93,6 +100,16 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setMyLocationEnabled(true);
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
+
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                mMap.clear();
+                markerOptions = new MarkerOptions().position(latLng).draggable(true);
+                mMap.addMarker(markerOptions);
+            }
+        });
+
 
     }
 
@@ -109,7 +126,7 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
                 Integer nivel = crimeLevel.getProgress();
                 String crimeSelecionado = crimeList.getSelectedItem().toString().trim();
 
-                Incident incidentInfo = new Incident(crimeSelecionado, descricao, nivel, latLng);
+                Incident incidentInfo = new Incident(crimeSelecionado, descricao, nivel, markerOptions.getPosition());
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference incident = database.getReference("incidentes");
