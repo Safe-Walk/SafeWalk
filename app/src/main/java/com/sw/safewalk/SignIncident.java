@@ -105,9 +105,9 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
                 crimeLevel = findViewById(R.id.crimeLevel);
                 crimeList = findViewById(R.id.crimeList);
 
-                String descricao = crimeDescription.getText().toString();
+                String descricao = crimeDescription.getText().toString().trim();
                 Integer nivel = crimeLevel.getProgress();
-                String crimeSelecionado = crimeList.getSelectedItem().toString();
+                String crimeSelecionado = crimeList.getSelectedItem().toString().trim();
 
                 Incident incidentInfo = new Incident(crimeSelecionado, descricao, nivel, latLng);
 

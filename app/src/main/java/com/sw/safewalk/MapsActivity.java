@@ -84,6 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
+
     @Override
     public void onMyLocationClick(@NonNull Location location){
         Toast.makeText(this, "current location:\n" + location, Toast.LENGTH_LONG).show();
@@ -94,5 +95,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         return false;
     }
-
 }
