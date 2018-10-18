@@ -126,7 +126,7 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
                 Integer nivel = crimeLevel.getProgress();
                 String crimeSelecionado = crimeList.getSelectedItem().toString().trim();
 
-                Incident incidentInfo = new Incident(crimeSelecionado, descricao, nivel, markerOptions.getPosition());
+                Incident incidentInfo = new Incident(crimeSelecionado, descricao, nivel, markerOptions.getPosition().latitude, markerOptions.getPosition().longitude);
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference incident = database.getReference("incidentes");
