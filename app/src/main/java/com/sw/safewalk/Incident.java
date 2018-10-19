@@ -36,4 +36,8 @@ public class Incident {
     public String getDescricao() {
         return descricao;
     }
+
+    public String toString() {
+        return this.crimeSelecionado + " " + this.descricao + " " + this.nivel + " " + this.latitude + " " + this.longitude;
+    }
 }
