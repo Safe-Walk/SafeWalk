@@ -35,15 +35,13 @@
         android:src="@android:drawable/ic_input_add"
         android:tint="@android:color/white" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/btnRouteMap"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/btnIncident"
-        android:layout_marginEnd="112dp"
-        android:background="@android:color/transparent"
-        android:clickable="true"
-        android:rotation="0" />
+    <Button
+        android:id="@+id/btnGetRoute"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btnIncident"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="30dp"
+        android:text="OK" />
 
 </RelativeLayout>
