@@ -40,7 +40,6 @@ import static java.lang.Double.parseDouble;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener{
     private static final int FINE_LOCATION_PERMISSION_REQUEST = 1;
     private GoogleMap mMap;
-    private static HashMap<String, Incident> seilavei = new HashMap<>();
     private List crimeLocations = new ArrayList();
     private ArrayList<Marker> markerArray, arrayAux;
     Route routeManager;
@@ -61,9 +60,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = map;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-15.7797, -47.9297);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(sydney.latitude, sydney.longitude), 15));
+//        LatLng sydney = new LatLng(-15.7797, -47.9297);
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(sydney.latitude, sydney.longitude), 15));
+//
+
         //criando array adicional para testar multiplas rotas
         arrayAux = new ArrayList<Marker>();
         //IESB
