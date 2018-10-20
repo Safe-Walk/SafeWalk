@@ -1,6 +1,7 @@
 package com.sw.safewalk;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -10,20 +11,28 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener{
     private static final int FINE_LOCATION_PERMISSION_REQUEST = 1;
     private GoogleMap mMap;
+    private ArrayList<Marker> markerArray, arrayAux;
+    Route routeManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +43,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-15.7797, -47.9297);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in my Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(sydney.latitude, sydney.longitude), 15));
+        //criando array adicional para testar multiplas rotas
+        arrayAux = new ArrayList<Marker>();
+        //IESB
+        Marker aux = mMap.addMarker(new MarkerOptions().position(new LatLng(-15.8220891,-47.9203992)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        arrayAux.add(aux);
+        //CEMITÉRIO
+        aux = mMap.addMarker(new MarkerOptions().position(new LatLng(-15.8175293,-47.9295169)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        arrayAux.add(aux);
+        //MCDONALDS
+        aux = mMap.addMarker(new MarkerOptions().position(new LatLng(-15.8292316,-47.9205266)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+        arrayAux.add(aux);
+        markerArray = new ArrayList<>();
+        routeManager = new Route(mMap);
 
         // Caso tenha a permissão do usuário, seta para pegar a localização e adiciona o botão de mudar para a localização.
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -59,11 +74,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     FINE_LOCATION_PERMISSION_REQUEST);
         }
 
-        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
-            public void onMapLongClick(LatLng latLng) {
-                mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(latLng));
+            public void onMapClick(LatLng latlng) {
+                Marker auxMarker = mMap.addMarker(new MarkerOptions().position(latlng).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                markerArray.add(auxMarker);
             }
         });
 
@@ -75,13 +90,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(intent);
             }
         });
-
-        // Botão para redirecionar a activity de criação de rotas
-        final FloatingActionButton btnRouteMap = (FloatingActionButton) findViewById(R.id.btnRouteMap);
-        btnRouteMap.setOnClickListener(new View.OnClickListener() {
+        final Button btnGetRoute =  findViewById(R.id.btnGetRoute);
+        btnGetRoute.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RouteMap.class);
-                startActivity(intent);
+                //enviando array de teste para classe gerenciadora de rotas
+                routeManager.sendRequest(arrayAux);
             }
         });
     }
@@ -96,4 +109,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         return false;
     }
+
+
+
+
 }
