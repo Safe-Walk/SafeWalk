@@ -39,7 +39,6 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
     private EditText crimeDescription;
     private SeekBar crimeLevel;
     private Spinner crimeList;
-    private Marker mMarker;
     private MarkerOptions markerOptions;
 
     @Override
@@ -93,6 +92,7 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Kathmandu, Nepal"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(sydney.latitude, sydney.longitude), 15));
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -126,17 +126,22 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
                 Integer nivel = crimeLevel.getProgress();
                 String crimeSelecionado = crimeList.getSelectedItem().toString().trim();
 
-                Incident incidentInfo = new Incident(crimeSelecionado, descricao, nivel, markerOptions.getPosition().latitude, markerOptions.getPosition().longitude);
+                if(markerOptions == null){
+                    Toast.makeText(SignIncident.this, "Favor informar um local.", Toast.LENGTH_SHORT).show();
+                } else {
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference incident = database.getReference("incidentes");
+                    Incident incidentInfo = new Incident(crimeSelecionado, descricao, nivel, markerOptions.getPosition().latitude, markerOptions.getPosition().longitude);
 
-                incident.child("listaOcorrencia").push().setValue(incidentInfo);
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference incident = database.getReference("incidentes");
 
-                Toast.makeText(SignIncident.this, "Obrigado por nos ajudar com as informações!", Toast.LENGTH_SHORT).show();
+                    incident.child("listaOcorrencia").push().setValue(incidentInfo);
 
-                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                startActivity(intent);
+                    Toast.makeText(SignIncident.this, "Obrigado por nos ajudar com as informações!", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }

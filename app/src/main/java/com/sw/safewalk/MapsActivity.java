@@ -73,14 +73,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     FINE_LOCATION_PERMISSION_REQUEST);
         }
 
-        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-            @Override
-            public void onMapLongClick(LatLng latLng) {
-                mMap.clear();
-                mMap.addMarker(new MarkerOptions().position(latLng));
-            }
-        });
-
         // Botão para redirecionar para a activity de registrar ocorrência
         final FloatingActionButton btnIncident = (FloatingActionButton) findViewById(R.id.btnIncident);
         btnIncident.setOnClickListener(new View.OnClickListener() {
@@ -138,5 +130,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onMyLocationButtonClick() {
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         return false;
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent exit = new Intent(Intent.ACTION_MAIN);
+        exit.addCategory(Intent.CATEGORY_HOME);
+        exit.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(exit);
     }
 }
