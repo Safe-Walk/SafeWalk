@@ -1,22 +1,28 @@
 package com.sw.safewalk;
 
-import com.google.android.gms.maps.model.LatLng;
-
 public class Incident {
     String crimeSelecionado;
     String descricao;
     Integer nivel;
-    LatLng latLng;
+    Double latitude;
+    Double longitude;
 
-    public Incident(String crimeSelecionado, String descricao, Integer nivel, LatLng latLng) {
+    public Incident() {}
+
+    public Incident(String crimeSelecionado, String descricao, Integer nivel, Double latitude, Double longitude) {
         this.crimeSelecionado = crimeSelecionado;
         this.descricao = descricao;
         this.nivel = nivel;
-        this.latLng = latLng;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    public LatLng getLatLng() {
-        return latLng;
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
     }
 
     public Integer getNivel() {
@@ -29,5 +35,9 @@ public class Incident {
 
     public String getDescricao() {
         return descricao;
+    }
+
+    public String toString() {
+        return this.crimeSelecionado + " " + this.descricao + " " + this.nivel + " " + this.latitude + " " + this.longitude;
     }
 }

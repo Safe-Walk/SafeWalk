@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     public void login() {
@@ -77,5 +79,13 @@ public class LoginActivity extends AppCompatActivity {
             }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent exit = new Intent(Intent.ACTION_MAIN);
+        exit.addCategory(Intent.CATEGORY_HOME);
+        exit.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(exit);
     }
 }
