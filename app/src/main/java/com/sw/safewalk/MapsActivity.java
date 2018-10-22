@@ -32,7 +32,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static java.lang.Double.parseDouble;
@@ -60,10 +59,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = map;
 
         // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-15.7797, -47.9297);
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(sydney.latitude, sydney.longitude), 15));
-//
+        LatLng sydney = new LatLng(-15.7797, -47.9297);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(sydney.latitude, sydney.longitude), 15));
+
 
         //criando array adicional para testar multiplas rotas
         arrayAux = new ArrayList<Marker>();
