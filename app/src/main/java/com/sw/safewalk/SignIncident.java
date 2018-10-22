@@ -24,7 +24,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -36,9 +35,6 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private LatLng latLng;
-    private EditText crimeDescription;
-    private SeekBar crimeLevel;
-    private Spinner crimeList;
     private MarkerOptions markerOptions;
 
     @Override
@@ -118,6 +114,11 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
         final Button saveIncident = findViewById(R.id.saveIncident);
         saveIncident.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                EditText crimeDescription;
+                SeekBar crimeLevel;
+                Spinner crimeList;
+                Double latitude, longitude;
+
                 crimeDescription = findViewById(R.id.crimeDescription);
                 crimeLevel = findViewById(R.id.crimeLevel);
                 crimeList = findViewById(R.id.crimeList);
@@ -126,11 +127,11 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
                 Integer nivel = crimeLevel.getProgress();
                 String crimeSelecionado = crimeList.getSelectedItem().toString().trim();
 
-                if(markerOptions == null){
-                    Toast.makeText(SignIncident.this, "Favor informar um local.", Toast.LENGTH_SHORT).show();
-                } else {
+                if(validate(descricao, nivel, crimeSelecionado)) {
+                    latitude = markerOptions.getPosition().latitude;
+                    longitude = markerOptions.getPosition().longitude;
 
-                    Incident incidentInfo = new Incident(crimeSelecionado, descricao, nivel, markerOptions.getPosition().latitude, markerOptions.getPosition().longitude);
+                    Incident incidentInfo = new Incident(crimeSelecionado, descricao, nivel, latitude, longitude);
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference incident = database.getReference("incidentes");
@@ -141,9 +142,16 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
 
                     Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                     startActivity(intent);
+                } else {
+                    Toast.makeText(SignIncident.this, "Favor preencher todos os campos.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    // Valida se os campos estiverem preenchidos
+    private boolean validate(String description, Integer level, String selected) {
+        return description != null && level != null && selected != null && markerOptions != null ? true : false;
     }
 
     @Override

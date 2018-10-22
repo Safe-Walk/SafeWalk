@@ -32,10 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import static java.lang.Double.parseDouble;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener{
     private static final int FINE_LOCATION_PERMISSION_REQUEST = 1;
@@ -58,6 +55,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
+
+        getLocation();
         
         //criando array adicional para testar multiplas rotas
         arrayAux = new ArrayList<Marker>();
@@ -73,18 +72,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         markerArray = new ArrayList<>();
         routeManager = new Route(mMap);
 
-        // Caso tenha a permissão do usuário, seta para pegar a localização e adiciona o botão de mudar para a localização.
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-            mMap.setOnMyLocationButtonClickListener(this);
-            mMap.setOnMyLocationClickListener(this);
-            //Caso não, pede ao usuário a permissão.
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    FINE_LOCATION_PERMISSION_REQUEST);
-        }
-
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latlng) {
@@ -93,14 +80,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        // Botão para redirecionar para a activity de registrar ocorrência
-        final FloatingActionButton btnIncident = (FloatingActionButton) findViewById(R.id.btnIncident);
-        btnIncident.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SignIncident.class);
-                startActivity(intent);
-            }
-        });
+        registerIncident();
+
         final Button btnGetRoute =  findViewById(R.id.btnGetRoute);
         btnGetRoute.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -109,6 +90,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        drawDangerousPoints();
+    }
+
+    public void getLocation() {
+        // Caso tenha a permissão do usuário, seta para pegar a localização e adiciona o botão de mudar para a localização.
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+            mMap.setOnMyLocationButtonClickListener(this);
+            mMap.setOnMyLocationClickListener(this);
+
+            //Caso não, pede ao usuário a permissão.
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    FINE_LOCATION_PERMISSION_REQUEST);
+        }
+    }
+
+    public void drawDangerousPoints() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         DatabaseReference ref = database.getReference("incidentes/listaOcorrencia");
@@ -117,7 +117,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snap: dataSnapshot.getChildren()) {
                     Incident in = snap.getValue(Incident.class);
-                    LatLng location = new LatLng(parseDouble(in.latitude.toString()), parseDouble(in.longitude.toString()));
+                    LatLng location = new LatLng(in.latitude, in.longitude);
 
                     crimeLocations.add(location);
                 }
@@ -135,6 +135,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+    }
+
+    public void registerIncident() {
+        // Botão para redirecionar para a activity de registrar ocorrência
+        final FloatingActionButton btnIncident = (FloatingActionButton) findViewById(R.id.btnIncident);
+        btnIncident.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SignIncident.class);
+                startActivity(intent);
             }
         });
     }
