@@ -40,8 +40,8 @@ import static java.lang.Double.parseDouble;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener{
     private static final int FINE_LOCATION_PERMISSION_REQUEST = 1;
     private GoogleMap mMap;
-    private List crimeLocations = new ArrayList();
-    private ArrayList<Marker> markerArray, arrayAux;
+    private ArrayList<LatLng> crimeLocations = new ArrayList<>();
+    private ArrayList<Marker> markerArray;
     Route routeManager;
 
     @Override
@@ -58,18 +58,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-        
-        //criando array adicional para testar multiplas rotas
-        arrayAux = new ArrayList<Marker>();
-        //IESB
-        Marker aux = mMap.addMarker(new MarkerOptions().position(new LatLng(-15.8220891,-47.9203992)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-        arrayAux.add(aux);
-        //CEMITÉRIO
-        aux = mMap.addMarker(new MarkerOptions().position(new LatLng(-15.8175293,-47.9295169)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-        arrayAux.add(aux);
-        //MCDONALDS
-        aux = mMap.addMarker(new MarkerOptions().position(new LatLng(-15.8292316,-47.9205266)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-        arrayAux.add(aux);
         markerArray = new ArrayList<>();
         routeManager = new Route(mMap);
 
@@ -104,8 +92,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final Button btnGetRoute =  findViewById(R.id.btnGetRoute);
         btnGetRoute.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //enviando array de teste para classe gerenciadora de rotas
-                routeManager.sendRequest(arrayAux);
+                routeManager.sendRequest(markerArray, crimeLocations);
             }
         });
 
@@ -118,7 +105,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for(DataSnapshot snap: dataSnapshot.getChildren()) {
                     Incident in = snap.getValue(Incident.class);
                     LatLng location = new LatLng(parseDouble(in.latitude.toString()), parseDouble(in.longitude.toString()));
-
                     crimeLocations.add(location);
                 }
 
@@ -128,7 +114,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             .radius(70)
                             .strokeColor(Color.RED)
                             .fillColor(Color.RED));
-//                    mMap.addMarker(new MarkerOptions().position((LatLng) crimeLocations.get(i)));
+                   // mMap.addMarker(new MarkerOptions().position((LatLng) crimeLocations.get(i)));
                 }
             }
 
