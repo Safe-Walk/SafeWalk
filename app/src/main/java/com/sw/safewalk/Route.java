@@ -119,7 +119,7 @@ public class Route {
             public void run() {
                 try {
                     //setando configurações de rede NÃO MEXER
-                    URL url = new URL("https://www.mapquestapi.com/directions/v2/route?key=INSIRA_CHAVE_AQUI");
+                    URL url = new URL("https://www.mapquestapi.com/directions/v2/route?key=CHAVE_AQUI");
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
