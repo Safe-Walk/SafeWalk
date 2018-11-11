@@ -12,7 +12,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -64,9 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        registerIncident();
-
-        final Button btnGetRoute =  findViewById(R.id.btnGetRoute);
+        final FloatingActionButton btnGetRoute = (FloatingActionButton) findViewById(R.id.btnGetRoute);
         btnGetRoute.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 routeManager.sendRequest(markerArray, crimeLocations);
@@ -122,17 +119,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    public void registerIncident() {
-        // Botão para redirecionar para a activity de registrar ocorrência
-        final FloatingActionButton btnIncident = (FloatingActionButton) findViewById(R.id.btnIncident);
-        btnIncident.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SignIncident.class);
-                startActivity(intent);
-            }
-        });
-    }
-
     @Override
     public void onMyLocationClick(@NonNull Location location){
         Toast.makeText(this, "current location:\n" + location, Toast.LENGTH_LONG).show();
@@ -148,10 +134,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onBackPressed(){
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
-//        Intent exit = new Intent(Intent.ACTION_MAIN);
-//        exit.addCategory(Intent.CATEGORY_HOME);
-//        exit.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(exit);
-
     }
 }
