@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         final Button btnFilter = findViewById(R.id.btnFilter);
         btnFilter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), SignIncident.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), FilterActivity.class);
+                startActivity(intent);
             }
         });
     }

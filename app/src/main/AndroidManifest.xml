@@ -9,9 +9,9 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET"
-        android:usesCleartextTraffic="true"
-        />
+    <uses-permission
+        android:name="android.permission.INTERNET"
+        android:usesCleartextTraffic="true" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +20,10 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApp">
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,7 +45,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDeXWcdiDVMhfPiV5Pc7pm7NYEmba82ncE" />
 
-
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
@@ -52,7 +54,7 @@
         <activity
             android:name=".SignIncident"
             android:label="Map" />
-
+        <activity android:name=".FilterActivity"></activity>
     </application>
 
 </manifest>
