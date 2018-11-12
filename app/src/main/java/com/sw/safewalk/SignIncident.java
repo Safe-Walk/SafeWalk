@@ -48,7 +48,7 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
         Spinner dropdown = findViewById(R.id.crimeList);
-        String[] items = new String[]{"Roubo", "Furto", "Assalto", "Perseguição", "Assédio", "Outro"};
+        String[] items = new String[]{"Assalto", "Roubo", "Furto", "Assédio", "Homicídio", "Preconceito", "Outro"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
 

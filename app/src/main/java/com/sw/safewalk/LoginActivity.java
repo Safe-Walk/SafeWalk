@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // Botão para redirecionar para a activity de cadastro
-        final TextView btnSignUp = findViewById(R.id.btnSignUp);
+        final Button btnSignUp = findViewById(R.id.btnSignUp);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
@@ -44,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // Botão para redirecionar para a activity de alterar senha
-        final TextView btnResetPsw = findViewById(R.id.btnResetPsw);
+        final Button btnResetPsw = findViewById(R.id.btnResetPsw);
         btnResetPsw.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ResetPasswordActivity.class);
