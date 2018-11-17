@@ -3,7 +3,8 @@ package com.sw.safewalk;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,16 +17,48 @@ import java.util.ArrayList;
 import static java.lang.Integer.parseInt;
 
 public class SortAndFilterActivity extends AppCompatActivity {
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
     private int distance;
     private boolean recent, danger;
     private ArrayList<Incident> sortArray = new ArrayList();
+    private ArrayList<Incident> sortedArray = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("entrou","");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort_and_filter);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
+//        mRecyclerView.setHasFixedSize(true);
+
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+//                LinearLayoutManager lln = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+//                MyAdapter adapter = (MyAdapter) mRecyclerView.getAdapter();
+
+//                if(sortedArray.size() == lln.findLastCompletelyVisibleItemPosition() + 1) {
+//                    ArrayList<Incident> aux = 26 min video
+//                }
+            }
+        });
+
+        LinearLayoutManager lln = new LinearLayoutManager(this);
+        lln.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(lln);
+
+
 
         danger = Boolean.parseBoolean(getIntent().getSerializableExtra("SortData").toString().split(" ")[0]);
         distance = parseInt(getIntent().getSerializableExtra("SortData").toString().split(" ")[1]);
@@ -41,25 +74,24 @@ public class SortAndFilterActivity extends AppCompatActivity {
                     Incident in = snap.getValue(Incident.class);
                     sortArray.add(in);
                 }
-                typeOfSort();
+                sortArray();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
-
-
     }
 
-    public void typeOfSort() {
-        Log.d("entrou","");
+    public void sortArray() {
         if (danger) {
-
             CountingSort s = new CountingSort();
             s.sort(sortArray);
-
+            sortedArray = s.getSortedArray();
+            MyAdapter adapter = new MyAdapter(this, sortedArray);
+            mRecyclerView.setAdapter(adapter);
         } else {
-            QuickSort s = new QuickSort();
+//            TODO implementar lógica para ordenar por distância
+//            QuickSort s = new QuickSort();
         }
     }
 }

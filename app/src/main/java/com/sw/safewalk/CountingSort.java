@@ -8,8 +8,6 @@ public class CountingSort {
     private ArrayList<Incident> sortedArray;
 
     void sort(ArrayList<Incident> arr) {
-        sortedArray = arr;
-
         int n = arr.size();
         int output[] = new int[n];
         int count[] = new int[256];
@@ -30,7 +28,9 @@ public class CountingSort {
 
         for (int i = 0; i < n; ++i)
             arr.get(i).setNivel(output[i]);
+
         printArray(arr);
+        sortedArray = arr;
     }
 
     void printArray(ArrayList<Incident> arr) {
