@@ -33,9 +33,8 @@ public class SortAndFilterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sort_and_filter);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
-//        mRecyclerView.setHasFixedSize(true);
 
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -44,21 +43,12 @@ public class SortAndFilterActivity extends AppCompatActivity {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
-//                LinearLayoutManager lln = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-//                MyAdapter adapter = (MyAdapter) mRecyclerView.getAdapter();
-
-//                if(sortedArray.size() == lln.findLastCompletelyVisibleItemPosition() + 1) {
-//                    ArrayList<Incident> aux = 26 min video
-//                }
             }
         });
 
         LinearLayoutManager lln = new LinearLayoutManager(this);
         lln.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(lln);
-
-
 
         danger = Boolean.parseBoolean(getIntent().getSerializableExtra("SortData").toString().split(" ")[0]);
         distance = parseInt(getIntent().getSerializableExtra("SortData").toString().split(" ")[1]);
