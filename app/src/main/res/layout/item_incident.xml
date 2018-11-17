@@ -8,14 +8,14 @@
         android:id="@+id/tv_level"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tv_model"
-        android:layout_below="@+id/tv_model"
+        android:layout_alignLeft="@+id/tv_crime"
+        android:layout_below="@+id/tv_crime"
         android:paddingRight="16dp"
         android:textColor="@color/colorPrimary"
         android:textSize="12sp" />
 
     <TextView
-        android:id="@+id/tv_model"
+        android:id="@+id/tv_crime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
@@ -25,10 +25,10 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tv_brand"
+        android:id="@+id/tv_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/tv_model"
+        android:layout_alignStart="@+id/tv_crime"
         android:layout_below="@+id/tv_level"
         android:paddingRight="16dp"
         android:textColor="@color/colorPrimary"
@@ -38,8 +38,8 @@
         android:id="@+id/vw_divider"
         android:layout_width="323dp"
         android:layout_height="0.8dp"
-        android:layout_alignLeft="@+id/tv_model"
-        android:layout_below="@+id/tv_brand"
+        android:layout_alignLeft="@+id/tv_crime"
+        android:layout_below="@+id/tv_description"
         android:layout_marginTop="20dp"
         android:background="@color/colorPrimary" />
 

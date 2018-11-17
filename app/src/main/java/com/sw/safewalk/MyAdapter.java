@@ -36,8 +36,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int position) {
         Log.i("LOG", "onBindViewHolder");
 //        myViewHolder.ivCar.setImageResource(mList.get(position).getPhoto());
-        myViewHolder.tvModel.setText("Tipo do Crime: " + mList.get(position).getCrimeSelecionado());
-        myViewHolder.tvBrand.setText("Descrição: " + mList.get(position).getDescricao());;
+        myViewHolder.tvCrime.setText("Tipo do Crime: " + mList.get(position).getCrimeSelecionado());
+        myViewHolder.tvDescription.setText("Descrição: " + mList.get(position).getDescricao());;
         myViewHolder.tvLevel.setText("Nível: " + mList.get(position).getNivel().toString());
     }
 
@@ -48,15 +48,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvModel;
-        public TextView tvBrand;
+        public TextView tvCrime;
+        public TextView tvDescription;
         public TextView tvLevel;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            tvModel = (TextView) itemView.findViewById(R.id.tv_model);
-            tvBrand = (TextView) itemView.findViewById(R.id.tv_brand);
+            tvCrime = (TextView) itemView.findViewById(R.id.tv_crime);
+            tvDescription = (TextView) itemView.findViewById(R.id.tv_description);
             tvLevel = (TextView) itemView.findViewById(R.id.tv_level);
         }
     }

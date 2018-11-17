@@ -68,6 +68,10 @@ public class FilterActivity extends AppCompatActivity {
         final Button btnFilter = findViewById(R.id.btnFilter);
         btnFilter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if(maxDistance.getText() == "") {
+                    maxDistance.setText("0 km");
+                }
+
                 sortData.setDistance(parseInt(maxDistance.getText().toString().split(" ")[0]));
                 Intent intent = new Intent(getApplicationContext(), SortAndFilterActivity.class);
                 intent.putExtra("SortData", (Serializable) sortData);
