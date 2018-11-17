@@ -1,57 +1,46 @@
 package com.sw.safewalk;
 
+import android.util.Log;
+
+import java.util.ArrayList;
+
 public class CountingSort {
+    private ArrayList<Incident> sortedArray;
 
-    void sort(char arr[]) {
-        int n = arr.length;
+    void sort(ArrayList<Incident> arr) {
+        sortedArray = arr;
 
-        // The output character array that will have sorted arr
-        char output[] = new char[n];
-
-        // Create a count array to store count of inidividul
-        // characters and initialize count array as 0
+        int n = arr.size();
+        int output[] = new int[n];
         int count[] = new int[256];
+
         for (int i = 0; i < 256; ++i)
             count[i] = 0;
 
-        // store count of each character
         for (int i = 0; i < n; ++i)
-            ++count[arr[i]];
+            ++count[arr.get(i).getNivel()];
 
-        // Change count[i] so that count[i] now contains actual
-        // position of this character in output array
         for (int i = 1; i <= 255; ++i)
             count[i] += count[i-1];
 
-        // Build the output character array
-        // To make it stable we are operating in reverse order.
         for (int i = n-1; i >= 0; i--) {
-            output[count[arr[i]]-1] = arr[i];
-            --count[arr[i]];
+            output[count[arr.get(i).getNivel()]-1] = arr.get(i).getNivel();
+            --count[arr.get(i).getNivel()];
         }
 
-        // Copy the output array to arr, so that arr now
-        // contains sorted characters
         for (int i = 0; i < n; ++i)
-            arr[i] = output[i];
+            arr.get(i).setNivel(output[i]);
+        printArray(arr);
     }
 
-    static void printArray(char[] arr) {
-        int n = arr.length;
-        for (int i=0; i<n; ++i)
-            System.out.print(arr[i]+" ");
-        System.out.println();
+    void printArray(ArrayList<Incident> arr) {
+        int n = arr.size();
+        for (int i = 0; i < n; i++)
+            Log.d("vetor",arr.get(i).getNivel()+" ");
+
     }
 
-    // Driver method
-    public static void main(String args[]) {
-        CountingSort ob = new CountingSort();
-        char arr[] = {'g', 'e', 'e', 'k', 's', 'f', 'o',
-                'r', 'g', 'e', 'e', 'k', 's'
-        };
-
-        ob.sort(arr);
-
-        ob.printArray(arr);
+    public ArrayList<Incident> getSortedArray() {
+        return sortedArray;
     }
 }

@@ -37,6 +37,26 @@ public class Incident {
         return descricao;
     }
 
+    public void setCrimeSelecionado(String crimeSelecionado) {
+        this.crimeSelecionado = crimeSelecionado;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setNivel(Integer nivel) {
+        this.nivel = nivel;
+    }
+
     public String toString() {
         return this.crimeSelecionado + " " + this.descricao + " " + this.nivel + " " + this.latitude + " " + this.longitude;
     }
