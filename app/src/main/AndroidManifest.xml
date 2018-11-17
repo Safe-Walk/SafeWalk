@@ -54,7 +54,8 @@
         <activity
             android:name=".SignIncident"
             android:label="Map" />
-        <activity android:name=".FilterActivity"></activity>
+        <activity android:name=".FilterActivity" />
+        <activity android:name=".SortAndFilterActivity"></activity>
     </application>
 
 </manifest>
