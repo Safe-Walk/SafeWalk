@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class SignIncident extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener {
@@ -118,21 +119,32 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
                 SeekBar crimeLevel;
                 Spinner crimeList;
                 Double latitude, longitude;
-                Long timeStamp = System.currentTimeMillis();
+                EditText date, hour;
 
                 crimeDescription = findViewById(R.id.crimeDescription);
                 crimeLevel = findViewById(R.id.crimeLevel);
                 crimeList = findViewById(R.id.crimeList);
+                date = findViewById(R.id.date);
+                hour = findViewById(R.id.hour);
 
                 String descricao = crimeDescription.getText().toString().trim();
                 Integer nivel = crimeLevel.getProgress();
                 String crimeSelecionado = crimeList.getSelectedItem().toString().trim();
+                String dataCrime = date.getText().toString().trim();
+                String horaCrime = hour.getText().toString().trim();
 
-                if(validate(descricao, nivel, crimeSelecionado)) {
+                if(validate(descricao, nivel, crimeSelecionado, dataCrime, horaCrime)) {
+                    String ano = dataCrime.split("/")[2];
+                    String mes = dataCrime.split("/")[1];
+                    String dia = dataCrime.split("/")[0];
+                    horaCrime += ":00.0";
+
+                    Timestamp timestamp = Timestamp.valueOf(ano.trim() + "-" + mes.trim() + "-" + dia.trim() + " " + horaCrime.trim());
+
                     latitude = markerOptions.getPosition().latitude;
                     longitude = markerOptions.getPosition().longitude;
 
-                    Incident incidentInfo = new Incident(crimeSelecionado, descricao, nivel, latitude, longitude, timeStamp);
+                    Incident incidentInfo = new Incident(crimeSelecionado, descricao, nivel, latitude, longitude, timestamp.getTime());
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference incident = database.getReference("incidentes");
@@ -151,8 +163,8 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     // Valida se os campos estiverem preenchidos
-    private boolean validate(String description, Integer level, String selected) {
-        return description != null && level != null && selected != null && markerOptions != null ? true : false;
+    private boolean validate(String description, Integer level, String selected, String date, String time) {
+        return description != null && level != null && selected != null && markerOptions != null && date != null && time != null ? true : false;
     }
 
     @Override
