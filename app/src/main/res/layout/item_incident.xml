@@ -28,6 +28,16 @@
         android:id="@+id/tv_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tv_level"
+        android:layout_below="@+id/tv_time"
+        android:paddingRight="16dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignStart="@+id/tv_crime"
         android:layout_below="@+id/tv_level"
         android:paddingRight="16dp"

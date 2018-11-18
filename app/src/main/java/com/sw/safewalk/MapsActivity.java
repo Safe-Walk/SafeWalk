@@ -1,10 +1,13 @@
 package com.sw.safewalk;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -37,6 +41,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ArrayList<LatLng> crimeLocations = new ArrayList<>();
     private ArrayList<Marker> markerArray;
     Route routeManager;
+    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = map;
         markerArray = new ArrayList<>();
         routeManager = new Route(mMap);
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        getLocation();
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -73,17 +80,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         drawDangerousPoints();
     }
 
-    public void getLocation() {
-        // Caso tenha a permissão do usuário, seta para pegar a localização e adiciona o botão de mudar para a localização.
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+    private void getLocation() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            mMap.setOnMyLocationButtonClickListener(this);
-            mMap.setOnMyLocationClickListener(this);
+            LocationListener locationListener = new LocationListener() {
+                public void onLocationChanged(Location location) {
+                    LatLng me = new LatLng(location.getLatitude(), location.getLongitude());
 
-            //Caso não, pede ao usuário a permissão.
+                    mMap.addMarker(new MarkerOptions().position(me).title("Estou Aqui!"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(me, 20));
+                }
+
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+                }
+
+                public void onProviderEnabled(String provider) {
+                }
+
+                public void onProviderDisabled(String provider) {
+                }
+            };
+
+
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100000, 0, locationListener);
         } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     FINE_LOCATION_PERMISSION_REQUEST);
         }
     }

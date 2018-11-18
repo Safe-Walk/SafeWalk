@@ -1,34 +1,39 @@
 package com.sw.safewalk;
 
-class QuickSort {
+import java.util.ArrayList;
 
-    int partition(int arr[], int low, int high) {
-        int pivot = arr[high];
+class QuickSort {
+    private ArrayList<Incident> sortedArray;
+
+    int partition(ArrayList<Incident> arr, int low, int high) {
+        Long pivot = arr.get(high).getHorario();
         int i = (low-1);
         for (int j = low; j < high; j++) {
-            if (arr[j] <= pivot) {
+            if (arr.get(j).getHorario() <= pivot) {
                 i++;
 
-                int temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
+                Long temp = arr.get(i).getHorario();
+                arr.get(i).setHorario(arr.get(j).getHorario());
+                arr.get(j).setHorario(temp);
             }
         }
 
-        int temp = arr[i+1];
-        arr[i+1] = arr[high];
-        arr[high] = temp;
+        Long temp = arr.get(i+1).getHorario();
+        arr.get(i+1).setHorario(arr.get(high).getHorario());
+        arr.get(high).setHorario(temp);
 
         return i+1;
     }
 
-    void sort(int arr[], int low, int high) {
+    void sort(ArrayList<Incident> arr, int low, int high) {
         if (low < high) {
             int pi = partition(arr, low, high);
 
             sort(arr, low, pi-1);
             sort(arr, pi+1, high);
         }
+
+        sortedArray = arr;
     }
 
     static void printArray(int arr[]) {
@@ -38,12 +43,16 @@ class QuickSort {
         System.out.println();
     }
 
+    public ArrayList<Incident> getSortedArray() {
+        return sortedArray;
+    }
+
     public static void main(String args[]) {
         int arr[] = {10, 7, 8, 9, 1, 5};
         int n = arr.length;
 
-        QuickSort ob = new QuickSort();
-        ob.sort(arr, 0, n-1);
+//        QuickSort ob = new QuickSort();
+//        ob.sort(arr, 0, n-1);
 
         System.out.println("sorted array");
         printArray(arr);

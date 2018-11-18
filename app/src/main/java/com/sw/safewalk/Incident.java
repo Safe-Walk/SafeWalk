@@ -6,15 +6,17 @@ public class Incident {
     Integer nivel;
     Double latitude;
     Double longitude;
+    Long horario;
 
     public Incident() {}
 
-    public Incident(String crimeSelecionado, String descricao, Integer nivel, Double latitude, Double longitude) {
+    public Incident(String crimeSelecionado, String descricao, Integer nivel, Double latitude, Double longitude, Long horario) {
         this.crimeSelecionado = crimeSelecionado;
         this.descricao = descricao;
         this.nivel = nivel;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.horario = horario;
     }
 
     public Double getLongitude() {
@@ -41,6 +43,10 @@ public class Incident {
         this.crimeSelecionado = crimeSelecionado;
     }
 
+    public Long getHorario() {
+        return horario;
+    }
+
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
@@ -57,11 +63,11 @@ public class Incident {
         this.nivel = nivel;
     }
 
-    public String toString() {
-        return this.crimeSelecionado + " " + this.descricao + " " + this.nivel + " " + this.latitude + " " + this.longitude;
+    public void setHorario(Long horario) {
+        this.horario = horario;
     }
 
-    public int getPhoto() {
-        return 1;
+    public String toString() {
+        return this.crimeSelecionado + " " + this.descricao + " " + this.nivel + " " + this.latitude + " " + this.longitude;
     }
 }

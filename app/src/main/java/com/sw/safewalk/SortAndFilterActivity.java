@@ -73,15 +73,18 @@ public class SortAndFilterActivity extends AppCompatActivity {
     }
 
     public void sortArray() {
-        if (danger) {
+        if(danger) {
             CountingSort s = new CountingSort();
             s.sort(sortArray);
             sortedArray = s.getSortedArray();
-            MyAdapter adapter = new MyAdapter(this, sortedArray);
-            mRecyclerView.setAdapter(adapter);
-        } else {
+        } else if(recent) {
 //            TODO implementar lógica para ordenar por distância
-//            QuickSort s = new QuickSort();
+            QuickSort s = new QuickSort();
+            s.sort(sortArray, 0, sortArray.size() - 1);
+            sortedArray = s.getSortedArray();
         }
+
+        MyAdapter adapter = new MyAdapter(this, sortedArray);
+        mRecyclerView.setAdapter(adapter);
     }
 }

@@ -118,6 +118,7 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
                 SeekBar crimeLevel;
                 Spinner crimeList;
                 Double latitude, longitude;
+                Long timeStamp = System.currentTimeMillis();
 
                 crimeDescription = findViewById(R.id.crimeDescription);
                 crimeLevel = findViewById(R.id.crimeLevel);
@@ -131,7 +132,7 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
                     latitude = markerOptions.getPosition().latitude;
                     longitude = markerOptions.getPosition().longitude;
 
-                    Incident incidentInfo = new Incident(crimeSelecionado, descricao, nivel, latitude, longitude);
+                    Incident incidentInfo = new Incident(crimeSelecionado, descricao, nivel, latitude, longitude, timeStamp);
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference incident = database.getReference("incidentes");

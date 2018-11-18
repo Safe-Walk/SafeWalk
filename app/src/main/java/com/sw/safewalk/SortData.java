@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class SortData implements Serializable {
     private int distance;
     private boolean recent, danger;
+    private Long time;
 
     public int getDistance() {
         return distance;
@@ -18,6 +19,10 @@ public class SortData implements Serializable {
         return recent;
     }
 
+    public Long getTime() {
+        return time;
+    }
+
     public void setDistance(int distance) {
         this.distance = distance;
     }
@@ -28,6 +33,10 @@ public class SortData implements Serializable {
 
     public void setRecent(boolean recent) {
         this.recent = recent;
+    }
+
+    public void setTime(Long time) {
+        this.time = time;
     }
 
     public String toString() {

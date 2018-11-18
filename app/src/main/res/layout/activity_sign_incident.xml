@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="52dp"
             android:clickable="true"
             android:text="Salvar"
             app:layout_constraintEnd_toEndOf="parent"

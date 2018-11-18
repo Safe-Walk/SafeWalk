@@ -39,6 +39,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         myViewHolder.tvCrime.setText("Tipo do Crime: " + mList.get(position).getCrimeSelecionado());
         myViewHolder.tvDescription.setText("Descrição: " + mList.get(position).getDescricao());;
         myViewHolder.tvLevel.setText("Nível: " + mList.get(position).getNivel().toString());
+        myViewHolder.tvTime.setText("Horário: " + mList.get(position).getHorario().toString());
     }
 
     //tamanho da lista
@@ -51,13 +52,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         public TextView tvCrime;
         public TextView tvDescription;
         public TextView tvLevel;
-
+        public TextView tvTime;
         public MyViewHolder(View itemView) {
             super(itemView);
 
             tvCrime = (TextView) itemView.findViewById(R.id.tv_crime);
             tvDescription = (TextView) itemView.findViewById(R.id.tv_description);
             tvLevel = (TextView) itemView.findViewById(R.id.tv_level);
+            tvTime = (TextView) itemView.findViewById(R.id.tv_time);
         }
     }
 }
