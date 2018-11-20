@@ -1,7 +1,5 @@
 package com.sw.safewalk;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 public class CountingSort {
@@ -10,15 +8,15 @@ public class CountingSort {
     void sort(ArrayList<Incident> arr) {
         int n = arr.size();
         int output[] = new int[n];
-        int count[] = new int[256];
+        int count[] = new int[11];
 
-        for (int i = 0; i < 256; ++i)
+        for (int i = 0; i <= 10; ++i)
             count[i] = 0;
 
         for (int i = 0; i < n; ++i)
             ++count[arr.get(i).getNivel()];
 
-        for (int i = 1; i <= 255; ++i)
+        for (int i = 1; i <= 10; ++i)
             count[i] += count[i-1];
 
         for (int i = n-1; i >= 0; i--) {
@@ -27,17 +25,9 @@ public class CountingSort {
         }
 
         for (int i = 0; i < n; ++i)
-            arr.get(i).setNivel(output[i]);
+            arr.get(i).setNivel(output[(n-1)-i]);
 
-        printArray(arr);
         sortedArray = arr;
-    }
-
-    void printArray(ArrayList<Incident> arr) {
-        int n = arr.size();
-        for (int i = 0; i < n; i++)
-            Log.d("vetor",arr.get(i).getNivel()+" ");
-
     }
 
     public ArrayList<Incident> getSortedArray() {

@@ -69,6 +69,7 @@ public class FilterActivity extends AppCompatActivity {
         btnFilter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(maxDistance.getText() == "") {
+                    // todo mudar para não filtrar
                     maxDistance.setText("0 km");
                 }
 

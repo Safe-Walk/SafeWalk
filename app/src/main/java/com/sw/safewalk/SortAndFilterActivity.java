@@ -78,7 +78,6 @@ public class SortAndFilterActivity extends AppCompatActivity {
             s.sort(sortArray);
             sortedArray = s.getSortedArray();
         } else if(recent) {
-//            TODO implementar lógica para ordenar por distância
             QuickSort s = new QuickSort();
             s.sort(sortArray, 0, sortArray.size() - 1);
             sortedArray = s.getSortedArray();
