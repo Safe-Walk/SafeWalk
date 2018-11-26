@@ -95,7 +95,6 @@ public class SortAndFilterActivity extends AppCompatActivity {
         return deg * (Math.PI/180);
     }
 
-
     public void sortArray() {
         if(danger) {
             CountingSort s = new CountingSort();

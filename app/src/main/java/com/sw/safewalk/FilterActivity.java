@@ -26,7 +26,9 @@ public class FilterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_filter);
 
         final SeekBar distance = findViewById(R.id.distance);
+        final SeekBar time = findViewById(R.id.time);
         final TextView maxDistance = findViewById(R.id.maxDistance);
+        final TextView maxTime = findViewById(R.id.maxTime);
         final Button btnDate = findViewById(R.id.btnDate);
         final Button btnDanger = findViewById(R.id.btnDanger);
         final Button btnFilter = findViewById(R.id.btnFilter);
@@ -35,11 +37,32 @@ public class FilterActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
 
-
         distance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar distance, int progress, boolean b) {
                 maxDistance.setText(String.valueOf(progress) + " km");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar distance) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar distance) {
+
+            }
+        });
+
+        time.setMax(30);
+        time.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar time, int progress, boolean b) {
+                if(progress == 0 || progress == 1) {
+                    maxTime.setText(String.valueOf(progress) + " dia");
+                } else {
+                    maxTime.setText(String.valueOf(progress) + " dias");
+                }
             }
 
             @Override
