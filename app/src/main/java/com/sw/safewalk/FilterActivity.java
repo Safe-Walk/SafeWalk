@@ -1,6 +1,8 @@
 package com.sw.safewalk;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,6 +18,7 @@ import static java.lang.Integer.parseInt;
 
 public class FilterActivity extends AppCompatActivity {
     SortData sortData = new SortData();
+    private final String[] items = new String[]{"Assalto", "Roubo", "Furto", "Assédio", "Homicídio", "Preconceito", "Outro"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +27,13 @@ public class FilterActivity extends AppCompatActivity {
 
         final SeekBar distance = findViewById(R.id.distance);
         final TextView maxDistance = findViewById(R.id.maxDistance);
+        final Button btnDate = findViewById(R.id.btnDate);
+        final Button btnDanger = findViewById(R.id.btnDanger);
+        final Button btnFilter = findViewById(R.id.btnFilter);
 
-        Spinner spinner = (Spinner) findViewById(R.id.regionList);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.planets_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        Spinner dropdown = findViewById(R.id.regionList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        dropdown.setAdapter(adapter);
 
 
         distance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -49,23 +53,31 @@ public class FilterActivity extends AppCompatActivity {
             }
         });
 
-        final Button btnDanger = findViewById(R.id.btnDanger);
         btnDanger.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 sortData.setRecent(false);
                 sortData.setDanger(true);
+
+                if(sortData.getDanger()) {
+                    btnDanger.getBackground().setColorFilter(Color.parseColor("#B4EEF7"), PorterDuff.Mode.MULTIPLY);
+                    btnDate.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.MULTIPLY);
+                }
+
             }
         });
 
-        final Button btnDate = findViewById(R.id.btnDate);
         btnDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 sortData.setRecent(true);
                 sortData.setDanger(false);
+
+                if(sortData.getRecent()) {
+                    btnDate.getBackground().setColorFilter(Color.parseColor("#B4EEF7"), PorterDuff.Mode.MULTIPLY);
+                    btnDanger.getBackground().setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.MULTIPLY);
+                }
             }
         });
 
-        final Button btnFilter = findViewById(R.id.btnFilter);
         btnFilter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(maxDistance.getText() == "") {
