@@ -72,6 +72,29 @@ public class SortAndFilterActivity extends AppCompatActivity {
         });
     }
 
+    public ArrayList<Incident> filterArray() {
+
+        return sortedArray;
+    }
+
+    public Double getDistanceFromLatLng(Double lat1, Double lat2, Double lon1, Double lon2) {
+        Double R = 6371.0;
+        Double dLat = deg2rad(lat2 - lat1);
+        Double dLon = deg2rad(lon2 - lon1);
+
+        Double a = Math.sin(dLat/2.0) * Math.sin(dLat/2.0) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                        Math.sin(dLon/2.0) * Math.sin(dLon/2.0);
+        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        Double d = R * c;
+
+        return d;
+    }
+
+    public Double deg2rad(Double deg) {
+        return deg * (Math.PI/180);
+    }
+
     public void sortArray() {
         if(danger) {
             CountingSort s = new CountingSort();
