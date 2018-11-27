@@ -143,7 +143,7 @@ public class Route {
             options.put("routeControlPointCollection", routeControlArray);
 
             finalJSON.put("locations", jsonLocations);
-            finalJSON.put("options", options);
+            finalJSON.put("options", options); 
             Log.d("AAAAA", finalJSON.toString());
         }catch(JSONException j){}
 
