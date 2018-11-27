@@ -58,7 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap map) {
         mMap = map;
         markerArray = new ArrayList<>();
-        routeManager = new Route(mMap);
+
 
         // Caso tenha a permissão do usuário, seta para pegar a localização e adiciona o botão de mudar para a localização.
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -91,7 +91,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final Button btnGetRoute =  findViewById(R.id.btnGetRoute);
         btnGetRoute.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                routeManager = new Route(mMap);
                 routeManager.sendRequest(markerArray, crimeLocations);
+            }
+        });
+
+        final FloatingActionButton btnClearScreen =  findViewById(R.id.btnClearScreen);
+        btnClearScreen.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                for(Marker marker:  markerArray){
+                    marker.remove();
+                }
+                markerArray = new ArrayList<Marker>();
+                routeManager.clearLine();
             }
         });
 
