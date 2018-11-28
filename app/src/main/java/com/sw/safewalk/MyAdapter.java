@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
@@ -34,12 +36,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     // vincula os dados da lista à view
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int position) {
-        Log.i("LOG", "onBindViewHolder");
-//        myViewHolder.ivCar.setImageResource(mList.get(position).getPhoto());
+        Timestamp ts = new Timestamp(mList.get(position).getHorario());
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/YYYY, HH:mm");
+
         myViewHolder.tvCrime.setText("Tipo do Crime: " + mList.get(position).getCrimeSelecionado());
         myViewHolder.tvDescription.setText("Descrição: " + mList.get(position).getDescricao());;
         myViewHolder.tvLevel.setText("Nível: " + mList.get(position).getNivel().toString());
-        myViewHolder.tvTime.setText("Horário: " + mList.get(position).getHorario().toString());
+        myViewHolder.tvTime.setText("Data e Hora: " + format.format(ts));
     }
 
     //tamanho da lista

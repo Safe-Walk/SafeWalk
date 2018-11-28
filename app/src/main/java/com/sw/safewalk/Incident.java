@@ -68,6 +68,6 @@ public class Incident {
     }
 
     public String toString() {
-        return this.crimeSelecionado + " " + this.descricao + " " + this.nivel + " " + this.latitude + " " + this.longitude;
+        return this.crimeSelecionado + " " + this.descricao + " " + this.nivel + " " + this.latitude + " " + this.longitude + " " + this.horario;
     }
 }

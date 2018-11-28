@@ -29,11 +29,12 @@ public class FilterActivity extends AppCompatActivity {
         final SeekBar time = findViewById(R.id.time);
         final TextView maxDistance = findViewById(R.id.maxDistance);
         final TextView maxTime = findViewById(R.id.maxTime);
+
         final Button btnDate = findViewById(R.id.btnDate);
         final Button btnDanger = findViewById(R.id.btnDanger);
         final Button btnFilter = findViewById(R.id.btnFilter);
 
-        Spinner dropdown = findViewById(R.id.regionList);
+        Spinner dropdown = findViewById(R.id.typeOfCrime);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
 
@@ -103,11 +104,18 @@ public class FilterActivity extends AppCompatActivity {
 
         btnFilter.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Spinner typeOfCrime = findViewById(R.id.typeOfCrime);
+
                 if(maxDistance.getText() == "") {
-                    // todo mudar para não filtrar
                     maxDistance.setText("0 km");
                 }
 
+                if(maxTime.getText() == "") {
+                    maxTime.setText("0 dias");
+                }
+
+                sortData.setTime(Long.valueOf(maxTime.getText().toString().split(" ")[0]));
+                sortData.setTypeOfCrime(typeOfCrime.getSelectedItem().toString().trim());
                 sortData.setDistance(parseInt(maxDistance.getText().toString().split(" ")[0]));
                 Intent intent = new Intent(getApplicationContext(), SortAndFilterActivity.class);
                 intent.putExtra("SortData", (Serializable) sortData);

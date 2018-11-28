@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         final Button btnMap = findViewById(R.id.btnMap);
         btnMap.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                 startActivity(intent);
             }
