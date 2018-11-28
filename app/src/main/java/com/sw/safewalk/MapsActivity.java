@@ -16,6 +16,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -36,15 +37,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener, LocationListener {
     private static final int FINE_LOCATION_PERMISSION_REQUEST = 1;
     private GoogleMap mMap;
     private ArrayList<LatLng> crimeLocations = new ArrayList<>();
+    private ArrayList<Integer> crimeWeight   = new ArrayList<>();
     private ArrayList<Marker> markerArray;
+    private ArrayList<Long> crimeTime = new ArrayList<>();
     private LocationManager locationManager;
     private String provider;
+    private Location location;
 
     Route routeManager;
 //    LocationManager locationManager;
@@ -76,7 +82,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria, false);
 
-        Location location = locationManager.getLastKnownLocation(provider);
+        location = locationManager.getLastKnownLocation(provider);
 
         if (location != null){
             System.out.println("Provider " + provider + " has been selected.");
@@ -88,7 +94,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap map) {
         mMap = map;
         markerArray = new ArrayList<>();
-        routeManager = new Route(mMap);
+        routeManager = new Route(mMap, this);
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         getLocation();
 
@@ -117,8 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final FloatingActionButton btnGetRoute = (FloatingActionButton) findViewById(R.id.btnGetRoute);
         btnGetRoute.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                routeManager = new Route(mMap);
-                routeManager.sendRequest(markerArray, crimeLocations);
+                if(markerArray.size() > 0)routeManager.sendRequest(markerArray, crimeLocations, crimeTime, crimeWeight);
             }
         });
 
@@ -130,12 +135,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
             LocationListener locationListener = new LocationListener() {
                 public void onLocationChanged(Location location) {
-                    LatLng me = new LatLng(location.getLatitude(), location.getLongitude());
 
-                    mMap.addMarker(new MarkerOptions().position(me).title("Estou Aqui!"));
+                    LatLng me = new LatLng(location.getLatitude(), location.getLongitude());
+                    Marker mAux;
+                    mAux = mMap.addMarker(new MarkerOptions().position(me).title("Estou Aqui!"));
+                    markerArray.add(mAux);
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(me, 17));
                 }
-
                 public void onStatusChanged(String provider, int status, Bundle extras) {
                 }
 
@@ -158,10 +164,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final FloatingActionButton btnClearScreen =  findViewById(R.id.btnClearScreen);
         btnClearScreen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Marker first = markerArray.get(0);
+                int i = 0;
                 for(Marker marker:  markerArray){
-                    marker.remove();
+                    if(i != 0 )marker.remove();
+                    i++;
                 }
                 markerArray = new ArrayList<Marker>();
+                markerArray.add(first);
                 routeManager.clearLine();
             }
         });
@@ -175,17 +185,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for(DataSnapshot snap: dataSnapshot.getChildren()) {
                     Incident in = snap.getValue(Incident.class);
                     LatLng location = new LatLng(in.latitude, in.longitude);
-
+                    Log.d("vei", Long.toString(in.horario));
                     crimeLocations.add(location);
+                    crimeWeight.add(in.nivel);
+                    crimeTime.add(in.horario);
                 }
 
                 for(int i = 0; i < crimeLocations.size(); i++) {
-                    Circle circle = mMap.addCircle(new CircleOptions()
-                            .center((LatLng) crimeLocations.get(i))
-                            .radius(70)
-                            .strokeColor(Color.RED)
-                            .fillColor(Color.RED));
-                   // mMap.addMarker(new MarkerOptions().position((LatLng) crimeLocations.get(i)));
+                   Timestamp aux = new Timestamp(crimeTime.get(i));
+                   Long days = Math.abs(Calendar.getInstance().getTime().getTime() - aux.getTime()) / (1000 * 60 * 60 * 24);
+
+                   if (days <= 14) {
+                        Circle circle = mMap.addCircle(new CircleOptions()
+                                .center((LatLng) crimeLocations.get(i))
+                                .radius(crimeWeight.get(i) * 10)
+                                .strokeColor(Color.RED)
+                                .strokeWidth(0)
+                                .fillColor(0x55ff0000));
+                        // mMap.addMarker(new MarkerOptions().position((LatLng) crimeLocations.get(i)));
+                    }
                 }
             }
 
@@ -204,6 +222,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMyLocationButtonClick() {
         Toast.makeText(this, "Redirecionando para localização atual.", Toast.LENGTH_SHORT).show();
+        if(markerArray.isEmpty()){
+            LatLng me = new LatLng(location.getLatitude(), location.getLongitude());
+            Marker mAux;
+            mAux = mMap.addMarker(new MarkerOptions().position(me).title("Estou Aqui!"));
+            markerArray.add(mAux);
+        }
         return false;
     }
     
