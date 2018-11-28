@@ -14,6 +14,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -33,13 +34,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMyLocationClickListener, GoogleMap.OnMyLocationButtonClickListener{
     private static final int FINE_LOCATION_PERMISSION_REQUEST = 1;
     private GoogleMap mMap;
     private ArrayList<LatLng> crimeLocations = new ArrayList<>();
+    private ArrayList<Integer> crimeWeight   = new ArrayList<>();
     private ArrayList<Marker> markerArray;
+    private ArrayList<Long> crimeTime = new ArrayList<>();
     Route routeManager;
     LocationManager locationManager;
 
@@ -58,7 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap map) {
         mMap = map;
         markerArray = new ArrayList<>();
-        routeManager = new Route(mMap);
+        routeManager = new Route(mMap, this);
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         getLocation();
 
@@ -86,8 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final FloatingActionButton btnGetRoute = (FloatingActionButton) findViewById(R.id.btnGetRoute);
         btnGetRoute.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                routeManager = new Route(mMap);
-                routeManager.sendRequest(markerArray, crimeLocations);
+                routeManager.sendRequest(markerArray, crimeLocations, crimeTime, crimeWeight);
             }
         });
 
@@ -144,17 +148,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for(DataSnapshot snap: dataSnapshot.getChildren()) {
                     Incident in = snap.getValue(Incident.class);
                     LatLng location = new LatLng(in.latitude, in.longitude);
-
+                    Log.d("vei", Long.toString(in.horario));
                     crimeLocations.add(location);
+                    crimeWeight.add(in.nivel);
+                    crimeTime.add(in.horario);
                 }
 
                 for(int i = 0; i < crimeLocations.size(); i++) {
-                    Circle circle = mMap.addCircle(new CircleOptions()
-                            .center((LatLng) crimeLocations.get(i))
-                            .radius(70)
-                            .strokeColor(Color.RED)
-                            .fillColor(Color.RED));
-                   // mMap.addMarker(new MarkerOptions().position((LatLng) crimeLocations.get(i)));
+                   Timestamp aux = new Timestamp(crimeTime.get(i));
+                   Long days = Math.abs(Calendar.getInstance().getTime().getTime() - aux.getTime()) / (1000 * 60 * 60 * 24);
+
+                   if (days <= 14) {
+                        Circle circle = mMap.addCircle(new CircleOptions()
+                                .center((LatLng) crimeLocations.get(i))
+                                .radius(crimeWeight.get(i) * 10)
+                                .strokeColor(Color.RED)
+                                .strokeWidth(0)
+                                .fillColor(0x55ff0000));
+                        // mMap.addMarker(new MarkerOptions().position((LatLng) crimeLocations.get(i)));
+                    }
                 }
             }
 
