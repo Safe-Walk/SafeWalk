@@ -91,6 +91,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         getLocation();
 
+
+        // Caso tenha a permissão do usuário, seta para pegar a localização e adiciona o botão de mudar para a localização.
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+            mMap.setOnMyLocationButtonClickListener(this);
+            mMap.setOnMyLocationClickListener(this);
+            //Caso não, pede ao usuário a permissão.
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    FINE_LOCATION_PERMISSION_REQUEST);
+        }
+
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latlng) {
@@ -102,6 +115,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final FloatingActionButton btnGetRoute = (FloatingActionButton) findViewById(R.id.btnGetRoute);
         btnGetRoute.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                routeManager = new Route(mMap);
                 routeManager.sendRequest(markerArray, crimeLocations);
             }
         });
@@ -139,6 +153,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void drawDangerousPoints() {
+        final FloatingActionButton btnClearScreen =  findViewById(R.id.btnClearScreen);
+        btnClearScreen.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                for(Marker marker:  markerArray){
+                    marker.remove();
+                }
+                markerArray = new ArrayList<Marker>();
+                routeManager.clearLine();
+            }
+        });
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         DatabaseReference ref = database.getReference("incidentes/listaOcorrencia");
