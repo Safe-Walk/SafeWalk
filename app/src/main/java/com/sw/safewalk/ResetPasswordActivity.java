@@ -3,6 +3,7 @@ package com.sw.safewalk;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,17 +32,22 @@ public class ResetPasswordActivity extends AppCompatActivity {
             public void onClick(View v) {
             EditText email = findViewById(R.id.email);
 
-            mAuth.sendPasswordResetEmail(email.getText().toString())
-            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(ResetPasswordActivity.this, "E-mail enviado com sucesso!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ResetPasswordActivity.this, "Não foi possível enviar o e-mail", Toast.LENGTH_SHORT).show();
+                if(TextUtils.isEmpty(email.getText())){
+                Toast.makeText(ResetPasswordActivity.this, "Favor preencher o campo de email.", Toast.LENGTH_SHORT).show();
+                }else {
+
+                    mAuth.sendPasswordResetEmail(email.getText().toString())
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(ResetPasswordActivity.this, "E-mail enviado com sucesso!", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(ResetPasswordActivity.this, "Não foi possível enviar o e-mail", Toast.LENGTH_SHORT).show();
+                                    }
+                            }
+                        });
                 }
-                }
-            });
             }
         });
     }
