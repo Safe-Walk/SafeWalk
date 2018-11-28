@@ -1,7 +1,9 @@
 package com.sw.safewalk;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -17,8 +19,13 @@ import org.json.JSONObject;
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class Route {
@@ -29,17 +36,25 @@ public class Route {
     int sizeGraph, parent[][];
     ArrayList<Marker> markersArray;
     ArrayList<Polyline> arrayLine;
+    ArrayList<Long> crimeTime;
+    ArrayList<Integer> crimeWeight;
+    ExecutorService execThreads;
+    Context activityContext;
 
-    Route(GoogleMap map){
+    Route(GoogleMap map, Context activityContext){
         this.map = map;
+        this.activityContext = activityContext;
     }
 
-    public void sendRequest(ArrayList<Marker> markersArray, ArrayList<LatLng> avoidArray) {
+    public void sendRequest(ArrayList<Marker> markersArray, ArrayList<LatLng> avoidArray, ArrayList<Long> crimeTime, ArrayList<Integer> crimeWeight) {
         this.avoidArray = avoidArray;
         int sizeArray = markersArray.size();
         this.sizeGraph = sizeArray;
         this.markersArray = markersArray;
+        this.crimeTime = crimeTime;
+        this.crimeWeight = crimeWeight;
         arrayLine = new ArrayList<Polyline>();
+        execThreads = Executors.newCachedThreadPool();
 
         allPaths = new String[sizeArray][sizeArray];            //rota entre todos os pontos
         distanceMatrix = new Double[sizeArray][sizeArray];      //apenas a distancia entre todos os pontos
@@ -67,9 +82,15 @@ public class Route {
                 }
             }
         }
-       try {
-           TimeUnit.SECONDS.sleep(8);//TODO SINCRONIZAR THREADS
-       }catch (java.lang.InterruptedException e){}
+        execThreads.shutdown();
+        try{
+            execThreads.awaitTermination(10,TimeUnit.SECONDS);
+        }catch(InterruptedException ie){
+            //Toast.makeText(activityContext, "Tempo limite excedido!",Toast.LENGTH_LONG).show();
+        }
+        /* try {
+           TimeUnit.SECONDS.sleep(20);//TODO SINCRONIZAR THREADS
+       }catch (java.lang.InterruptedException e){}*/
 
         for(int i=0; i<sizeArray; i++){                             //pegando matriz de distancias
             for(int j=0; j<sizeArray; j++){
@@ -87,13 +108,17 @@ public class Route {
             }
         }
         getTspRoute();
+        Log.d("asdfggg", "cabo");
         ArrayList<Integer> path = getPath();
         try {
             printPath(path);
         }catch(JSONException js){}
 
+        int j = 2;
+        markersArray.get(0).setTitle("1");
         for(int i: path){
-            markersArray.get(i).setTitle(Integer.toString(i));
+            markersArray.get(i).setTitle(Integer.toString(j));
+            j++;
         }
     }
 
@@ -126,13 +151,20 @@ public class Route {
             options.put("shapeFormat", "raw");
 
             for(int i=0; i<avoidArray.size(); i++){
-                JSONObject routeCtrlOp    = new JSONObject();
-                LatLng m = avoidArray.get(i);
-                routeCtrlOp.put("lat", m.latitude);
-                routeCtrlOp.put("lng", m.longitude);
-                routeCtrlOp.put("weight", 50.0);
-                routeCtrlOp.put("radius", 0.2);
-                routeControl.add(routeCtrlOp);
+                Timestamp aux = new Timestamp(crimeTime.get(i));
+                long days = Math.abs(Calendar.getInstance().getTime().getTime() - aux.getTime()) / (1000*60*60*24);
+
+                if(days <= 14) {
+                    JSONObject routeCtrlOp = new JSONObject();
+                    LatLng m = avoidArray.get(i);
+                    routeCtrlOp.put("lat", m.latitude);
+                    routeCtrlOp.put("lng", m.longitude);
+                    routeCtrlOp.put("weight", Math.max(1.1, 4.0 - (Double.valueOf(days)*0.3 )));  //cada dia desconta 0.3
+                    routeCtrlOp.put("radius", crimeWeight.get(i)*0.01);
+                    Log.d("Raio", "Raio: " + Double.valueOf(0.01*crimeWeight.get(i)).toString());
+                    Log.d("Peso", "Peso: " + Double.valueOf(Math.max(1.1, 4.0 - (Double.valueOf(days)*0.3 ))).toString());
+                    routeControl.add(routeCtrlOp);
+                }
             }
 
             locArray.add(jsonStartPos);
@@ -147,12 +179,12 @@ public class Route {
             Log.d("AAAAA", finalJSON.toString());
         }catch(JSONException j){}
 
-        Thread thread = new Thread(new Runnable() {
+        execThreads.execute(new Runnable() {
             @Override
             public void run() {
                 try {
                     //setando configurações de rede NÃO MEXER
-                    URL url = new URL("https://www.mapquestapi.com/directions/v2/route?key=CHAVE_AQUI");
+                    URL url = new URL("https://www.mapquestapi.com/directions/v2/route?key=3FVbEMC55uCn6aYDFh8LGPfWnGaZskmA");
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
@@ -177,7 +209,7 @@ public class Route {
                 }
             }
         });
-        thread.start();
+
     }
 
     void printPath(ArrayList<Integer> path) throws JSONException {
@@ -218,7 +250,7 @@ public class Route {
                                             Double.parseDouble(arrayPath[k+1])),
                                     new LatLng(Double.parseDouble(arrayPath[k+2]),
                                             Double.parseDouble(arrayPath[k+3])))
-                                    .width(10).color(colorArray[countColor%5]);
+                                    .width(10).color(Color.CYAN);
 
                     Polyline lineAux = map.addPolyline(line);
                     arrayLine.add(lineAux);

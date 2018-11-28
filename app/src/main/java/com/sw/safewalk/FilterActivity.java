@@ -18,7 +18,7 @@ import static java.lang.Integer.parseInt;
 
 public class FilterActivity extends AppCompatActivity {
     SortData sortData = new SortData();
-    private final String[] items = new String[]{"Assalto", "Roubo", "Furto", "Assédio", "Homicídio", "Preconceito", "Outro"};
+    private final String[] items = new String[]{"Assalto","Assédio", "Furto", "Homicídio", "Outro", "Preconceito", "Roubo"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

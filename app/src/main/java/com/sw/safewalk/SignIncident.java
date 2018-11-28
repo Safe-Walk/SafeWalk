@@ -37,7 +37,7 @@ public class SignIncident extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private LatLng latLng;
     private MarkerOptions markerOptions;
-    private final String[] items = new String[]{"Assalto", "Roubo", "Furto", "Assédio", "Homicídio", "Preconceito", "Outro"};
+    private final String[] items = new String[]{"Assalto","Assédio", "Furto", "Homicídio", "Outro", "Preconceito", "Roubo"};
 
 
     @Override

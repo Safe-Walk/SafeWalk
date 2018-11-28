@@ -1,11 +1,23 @@
 package com.sw.safewalk;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,14 +29,20 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 
-public class SortAndFilterActivity extends AppCompatActivity {
+public class SortAndFilterActivity extends AppCompatActivity implements LocationListener {
     private RecyclerView mRecyclerView;
+    private static final int FINE_LOCATION_PERMISSION_REQUEST = 1;
 
+    private LocationManager locationManager;
+    private String provider;
+    private Location location;
     private int distance;
     private boolean recent, danger;
     private String typeOfCrime;
@@ -37,6 +55,29 @@ public class SortAndFilterActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort_and_filter);
+
+        if( ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, SortAndFilterActivity.FINE_LOCATION_PERMISSION_REQUEST);
+        }
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        boolean enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        if (!enabled) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
+        }
+
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+
+        location = locationManager.getLastKnownLocation(provider);
+
+        if (location != null){
+            System.out.println("Provider " + provider + " has been selected.");
+            onLocationChanged(location);
+        }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_list);
 
@@ -100,17 +141,17 @@ public class SortAndFilterActivity extends AppCompatActivity {
         ArrayList<Incident> anotherArray = new ArrayList<>();
 
         if(time != 0) {
-
-            DateTime now = new DateTime();
+            long now = Calendar.getInstance().getTime().getTime();
 
             for(int i = 0; i < newArray.size(); i++) {
-                Date d = new Date(newArray.get(i).getHorario());
-                DateTime filterTime = new DateTime(d);
-
-                if(Days.daysBetween(filterTime, now).getDays() <= time || Days.daysBetween(now, filterTime).getDays() <= time) {
+                long actual = newArray.get(i).getHorario();
+                Log.d("AAAAAAAAAAAAAAA", Long.toString(Math.abs(now - actual) / (1000*60*60*24)));
+                Log.d("BBBBB", Long.toString(time));
+                if((Math.abs(now - actual) / (1000*60*60*24)) <= time) {
                     anotherArray.add(newArray.get(i));
                 }
             }
+
             return anotherArray;
         } else {
             return newArray;
@@ -136,12 +177,26 @@ public class SortAndFilterActivity extends AppCompatActivity {
         return deg * (Math.PI/180);
     }
 
+    ArrayList<Incident> filterByDistance(ArrayList<Incident> newArray){
+        ArrayList<Incident> anotherArray = new ArrayList<Incident>();
+
+        for(Incident inc: newArray){
+            Log.d("Distancia", Double.valueOf(getDistanceFromLatLng(inc.getLatitude(), location.getLatitude(), inc.getLongitude(), location.getLongitude())).toString());
+            if(getDistanceFromLatLng(inc.getLatitude(), location.getLatitude(), inc.getLongitude(), location.getLongitude()) <= distance){
+                anotherArray.add(inc);
+            }
+        }
+        return anotherArray;
+    }
+
     public void sortArray() {
 
         ArrayList<Incident> filteredArray = sortArray;
 
         filteredArray = filterByDate(filteredArray);
         filteredArray = filterByType(filteredArray);
+        filteredArray = filterByDistance(filteredArray);
+        Log.d("ERREI", filteredArray.toString());
 
         if(danger) {
             CountingSort s = new CountingSort();
@@ -155,5 +210,37 @@ public class SortAndFilterActivity extends AppCompatActivity {
 
         MyAdapter adapter = new MyAdapter(this, sortedArray);
         mRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Toast.makeText(this, "Enabled new provider " + provider, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Toast.makeText(this, "Diasbled provider " + provider, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        locationManager.requestLocationUpdates(provider, 400, 1, this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        locationManager.removeUpdates(this);
     }
 }
