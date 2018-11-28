@@ -6,6 +6,7 @@ public class SortData implements Serializable {
     private int distance;
     private boolean recent, danger;
     private Long time;
+    private String typeOfCrime;
 
     public int getDistance() {
         return distance;
@@ -39,7 +40,15 @@ public class SortData implements Serializable {
         this.time = time;
     }
 
+    public String getTypeOfCrime() {
+        return typeOfCrime;
+    }
+
+    public void setTypeOfCrime(String typeOfCrime) {
+        this.typeOfCrime = typeOfCrime;
+    }
+
     public String toString() {
-        return this.danger + " " + this.distance + " " + this.recent;
+        return this.danger + " " + this.distance + " " + this.recent + " " + this.typeOfCrime + " " + this.time;
     }
 }
