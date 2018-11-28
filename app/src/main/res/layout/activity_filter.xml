@@ -81,7 +81,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.027"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/regionList" />
+        app:layout_constraintTop_toBottomOf="@+id/typeOfCrime" />
 
     <TextView
         android:id="@+id/txt1"
@@ -99,7 +99,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
-        android:id="@+id/regionList"
+        android:id="@+id/typeOfCrime"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
