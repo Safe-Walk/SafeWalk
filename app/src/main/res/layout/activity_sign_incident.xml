@@ -14,51 +14,6 @@
         android:layout_height="match_parent"
         tools:context=".SignIncident">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input2"
-            android:layout_width="152dp"
-            android:layout_height="49dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            app:layout_constraintEnd_toStartOf="@+id/textInputLayout3"
-            app:layout_constraintHorizontal_bias="0.041"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4">
-
-            <com.vicmikhailau.maskededittext.MaskedEditText
-                android:id="@+id/date"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="DATA"
-                android:inputType="date"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Tab"
-                app:mask="##/##/####" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input"
-            android:layout_width="325dp"
-            android:layout_height="49dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.571"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/crimeDescription"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="DESCRIÇÃO"
-                android:inputType="text"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Tab" />
-
-        </android.support.design.widget.TextInputLayout>
-
         <Button
             android:id="@+id/saveIncident"
             style="@android:style/Widget.Material.Button"
@@ -196,6 +151,51 @@
                 android:inputType="time"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Tab"
                 app:mask="##:##" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input2"
+            android:layout_width="152dp"
+            android:layout_height="49dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toStartOf="@+id/textInputLayout3"
+            app:layout_constraintHorizontal_bias="0.041"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+            <com.vicmikhailau.maskededittext.MaskedEditText
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="DATA"
+                android:inputType="date"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Tab"
+                app:mask="##/##/####" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input"
+            android:layout_width="325dp"
+            android:layout_height="49dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.571"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/crimeDescription"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="DESCRIÇÃO"
+                android:inputType="text"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Tab" />
 
         </android.support.design.widget.TextInputLayout>
 

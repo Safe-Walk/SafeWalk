@@ -9,9 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private ArrayList<Incident> mList;
@@ -36,13 +35,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     // vincula os dados da lista à view
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int position) {
-        Timestamp ts = new Timestamp(mList.get(position).getHorario());
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/YYYY, HH:mm");
+        Long ts = mList.get(position).getHorario();
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(ts);
 
         myViewHolder.tvCrime.setText("Tipo do Crime: " + mList.get(position).getCrimeSelecionado());
         myViewHolder.tvDescription.setText("Descrição: " + mList.get(position).getDescricao());;
         myViewHolder.tvLevel.setText("Nível: " + mList.get(position).getNivel().toString());
-        myViewHolder.tvTime.setText("Data e Hora: " + format.format(ts));
+        myViewHolder.tvTime.setText("Data e Hora: " + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.YEAR) + ", " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE));
     }
 
     //tamanho da lista
