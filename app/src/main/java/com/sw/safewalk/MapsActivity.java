@@ -196,7 +196,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMyLocationClick(@NonNull Location location){
-        Toast.makeText(this, "current location:\n" + location, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Localização atual.\n", Toast.LENGTH_SHORT).show();
     }
 
     @Override
