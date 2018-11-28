@@ -2,6 +2,7 @@ package com.sw.safewalk;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.location.Location;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -53,7 +54,7 @@ public class Route {
         this.markersArray = markersArray;
         this.crimeTime = crimeTime;
         this.crimeWeight = crimeWeight;
-        arrayLine = new ArrayList<Polyline>();
+        if(arrayLine == null)arrayLine = new ArrayList<Polyline>();
         execThreads = Executors.newCachedThreadPool();
 
         allPaths = new String[sizeArray][sizeArray];            //rota entre todos os pontos
@@ -129,8 +130,6 @@ public class Route {
         JSONObject auxStart     = new JSONObject();
         JSONObject auxEnd       = new JSONObject();
         JSONObject options      = new JSONObject();
-
-
 
         ArrayList<JSONObject> locArray = new ArrayList<JSONObject>();
         ArrayList<JSONObject> routeControl = new ArrayList<JSONObject>();
@@ -261,9 +260,6 @@ public class Route {
             current = i;
             countColor++;
         }
-
-
-
     }
 
     void getTspRoute(){
@@ -306,10 +302,12 @@ public class Route {
     }
 
     void clearLine(){
-        for(Polyline aux: arrayLine){
-            aux.remove();
+        if(arrayLine != null) {
+            for (Polyline aux : arrayLine) {
+                aux.remove();
+            }
+            arrayLine.clear();
         }
         arrayLine = new ArrayList<Polyline>();
     }
-
 }
